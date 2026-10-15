@@ -91,12 +91,6 @@
       transition: border-color 0.2s, box-shadow 0.2s;
     }
     textarea:focus-visible { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(124, 92, 255, 0.2); }
-    textarea.error-shake { border-color: var(--danger); animation: shake 0.4s ease-in-out; }
-    @keyframes shake {
-      0%, 100% { transform: translateX(0); }
-      20%, 60% { transform: translateX(-6px); }
-      40%, 80% { transform: translateX(6px); }
-    }
     .primary-btn {
       background: var(--grad-primary); color: #121212; border: none; border-radius: 8px;
       padding: 12px; font-size: 16px; font-weight: 700; cursor: pointer; min-height: 44px;
@@ -108,7 +102,6 @@
       background-color: rgba(255, 92, 122, 0.15); border: 1px solid var(--danger); color: var(--danger);
       padding: 12px; border-radius: 8px; font-size: 13px; display: none;
     }
-    .info-tips { font-size: 12px; color: var(--muted); line-height: 1.6; background: var(--surface-2); padding: 12px; border-radius: 8px; border-left: 3px solid var(--accent); }
     .stage { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px; position: relative; background: radial-gradient(circle at center, #1e1e24 0%, var(--bg) 70%); }
     .wheel-container { position: relative; width: 100%; max-width: 620px; aspect-ratio: 1; display: flex; align-items: center; justify-content: center; }
     canvas { width: 100%; height: 100%; max-width: 620px; max-height: 620px; }
@@ -151,22 +144,18 @@
         </button>
       </div>
       <div class="form-group">
-        <div class="label-wrapper"><label for="namesInput">參與抽獎名單 (一行一個)</label><span id="countBadge" class="badge">5 人</span></div>
-        <textarea id="namesInput" autocomplete="off" spellcheck="false">
-          王小明
-          陳美玲
-          林志豪
-          張雅婷
-          黃俊傑
-        </textarea>
+        <div class="label-wrapper"><label for="namesInput">參與抽獎名單 (一行一個)</label><span id="countBadge" class="badge">0 人</span></div>
+        <textarea id="namesInput" autocomplete="off" spellcheck="false">王小明
+陳美玲
+林志豪
+張雅婷
+黃俊傑</textarea>
       </div>
       <div class="form-group">
         <div class="label-wrapper"><label for="prizesInput">獎品清單 (一行一個)</label></div>
-        <textarea id="prizesInput" autocomplete="off" spellcheck="false">
-          iPhone 16 Pro
-          無線降噪耳機
-          雙人電影票
-        </textarea>
+        <textarea id="prizesInput" autocomplete="off" spellcheck="false">iPhone 16 Pro
+無線降噪耳機
+雙人電影票</textarea>
       </div>
       <button id="updateBtn" class="primary-btn">確認更新輪盤</button>
       <div id="errorToast" class="toast"></div>
@@ -190,3 +179,4 @@
   </div>
   <script>
     const palette = ['#FF6B9D', '#4D9FFF', '#34D399', '#FBBF24', '#A78BFA', '#FB7185', '#22D3EE', '#F59E0B'];
+    let names = [], prizes = [], isSpinning = false, currentRotation = 0, soundEnabled = true, lastTickSector = -1, audioCtx = null, lastWinner = "";
