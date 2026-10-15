@@ -102,13 +102,37 @@
       background-color: rgba(255, 92, 122, 0.15); border: 1px solid var(--danger); color: var(--danger);
       padding: 12px; border-radius: 8px; font-size: 13px; display: none;
     }
-    .stage { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px; position: relative; background: radial-gradient(circle at center, #1e1e24 0%, var(--bg) 70%); }
-    .wheel-container { position: relative; width: 100%; max-width: 620px; aspect-ratio: 1; display: flex; align-items: center; justify-content: center; }
-    canvas { width: 100%; height: 100%; max-width: 620px; max-height: 620px; }
+    
+    /* 核心舞台排版修正：使用 flex 垂直排列，並確保容器有固定寬高不被擠壓 */
+    .stage {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: radial-gradient(circle at center, #1e1e24 0%, var(--bg) 70%);
+      height: 100vh;
+      overflow: hidden;
+    }
+    .wheel-container {
+      position: relative;
+      width: 500px;
+      height: 500px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    canvas {
+      width: 500px;
+      height: 500px;
+      display: block;
+    }
+    
     .spin-btn {
-      margin-top: 30px; background: var(--grad-primary); color: #121212; border: none; border-radius: 50px;
+      margin-top: 24px; background: var(--grad-primary); color: #121212; border: none; border-radius: 50px;
       padding: 14px 48px; font-size: 18px; font-weight: 800; letter-spacing: 2px; cursor: pointer; min-height: 48px;
       box-shadow: var(--shadow-glow); transition: all 0.3s ease;
+      z-index: 10;
     }
     .spin-btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 0 50px rgba(124,92,255,0.6); }
     .spin-btn:disabled { background: var(--surface-2); color: var(--muted); border: 1px solid var(--border); box-shadow: none; cursor: not-allowed; }
@@ -127,9 +151,9 @@
     .modal-btn-cancel { background: var(--surface-2); color: var(--text); border: 1px solid var(--border); }
     @media (max-width: 979px) {
       .app-container { grid-template-columns: 1fr; grid-template-areas: "stage" "panel"; }
-      .stage { grid-area: stage; padding: 20px; border-bottom: 1px solid var(--border); }
+      .stage { grid-area: stage; height: auto; padding: 20px; border-bottom: 1px solid var(--border); }
       .control-panel { grid-area: panel; border-right: none; box-shadow: none; }
-      canvas { max-width: 85vw; max-height: 85vw; }
+      .wheel-container, canvas { width: 85vw; height: 85vw; max-width: 450px; max-height: 450px; }
     }
   </style>
 </head>
@@ -188,7 +212,3 @@
     let audioCtx = null;
     let lastWinner = "";
 
-    const canvas = document.getElementById('wheelCanvas');
-    const ctx = canvas.getContext('2d');
-    const namesInput = document.getElementById('namesInput');
-    const prizesInput = document.getElementById('prizesInput');
