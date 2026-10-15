@@ -7,153 +7,40 @@
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://w3.org' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' fill='%237C5CFF'/%3E%3Cpath d='M50 15 L65 45 L35 45 Z' fill='%2322D3EE'/%3E%3C/svg%3E">
   <style>
     :root {
-      --bg: #121212;
-      --surface: #1B1B20;
-      --surface-2: #232329;
-      --text: #E0E0E0;
-      --muted: #9A9AA5;
-      --border: rgba(224, 224, 224, 0.10);
-      --accent: #7C5CFF;
-      --accent-2: #22D3EE;
-      --danger: #FF5C7A;
-      --grad-primary: linear-gradient(135deg, #7C5CFF, #22D3EE);
-      --shadow-glow: 0 0 40px rgba(124, 92, 255, 0.35);
-      --shadow-card: 0 18px 40px -18px rgba(0, 0, 0, 0.8);
+      --bg: #121212; --surface: #1B1B20; --surface-2: #232329; --text: #E0E0E0; --muted: #9A9AA5; --border: rgba(224, 224, 224, 0.10);
+      --accent: #7C5CFF; --accent-2: #22D3EE; --danger: #FF5C7A; --grad-primary: linear-gradient(135deg, #7C5CFF, #22D3EE);
+      --shadow-glow: 0 0 40px rgba(124, 92, 255, 0.35); --shadow-card: 0 18px 40px -18px rgba(0, 0, 0, 0.8);
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      background-color: var(--bg);
-      color: var(--text);
-      font-family: -apple-system, "Segoe UI", "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
-    .app-container {
-      display: grid;
-      grid-template-columns: 380px 1fr;
-      min-height: 100vh;
-      width: 100%;
-    }
-    .control-panel {
-      background-color: var(--surface);
-      border-right: 1px solid var(--border);
-      padding: 24px;
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-      overflow-y: auto;
-      box-shadow: 10px 0 30px rgba(0,0,0,0.3);
-    }
-    .panel-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding-bottom: 16px;
-      border-bottom: 1px solid var(--border);
-    }
-    .panel-header h1 {
-      font-size: 20px;
-      font-weight: 700;
-      background: var(--grad-primary);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-    .icon-btn {
-      background: var(--surface-2);
-      border: 1px solid var(--border);
-      color: var(--text);
-      width: 40px;
-      height: 40px;
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-    .icon-btn:hover { background: var(--accent); border-color: var(--accent); }
+    body { background-color: var(--bg); color: var(--text); font-family: -apple-system, "Segoe UI", sans-serif; min-height: 100vh; display: flex; flex-direction: column; }
+    .app-container { display: grid; grid-template-columns: 380px 1fr; min-height: 100vh; width: 100%; }
+    .control-panel { background-color: var(--surface); border-right: 1px solid var(--border); padding: 24px; display: flex; flex-direction: column; gap: 20px; overflow-y: auto; }
+    .panel-header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
+    .panel-header h1 { font-size: 20px; font-weight: 700; background: var(--grad-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .icon-btn { background: var(--surface-2); border: 1px solid var(--border); color: var(--text); width: 40px; height: 40px; border-radius: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
     .form-group { display: flex; flex-direction: column; gap: 8px; }
     .label-wrapper { display: flex; justify-content: space-between; align-items: center; }
     label { font-size: 14px; font-weight: 600; color: var(--muted); }
     .badge { background: var(--accent); color: #fff; font-size: 12px; padding: 2px 8px; border-radius: 20px; font-weight: 700; }
-    textarea {
-      background-color: var(--surface-2);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      color: var(--text);
-      padding: 12px;
-      font-size: 14px;
-      line-height: 1.5;
-      resize: none;
-      height: 140px;
-      outline: none;
-      transition: border-color 0.2s, box-shadow 0.2s;
-    }
-    textarea:focus-visible { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(124, 92, 255, 0.2); }
-    .primary-btn {
-      background: var(--grad-primary); color: #121212; border: none; border-radius: 8px;
-      padding: 12px; font-size: 16px; font-weight: 700; cursor: pointer; min-height: 44px;
-      transition: opacity 0.2s, transform 0.1s; box-shadow: var(--shadow-glow);
-    }
-    .primary-btn:hover { opacity: 0.9; }
-    .primary-btn:active { transform: scale(0.98); }
-    .toast {
-      background-color: rgba(255, 92, 122, 0.15); border: 1px solid var(--danger); color: var(--danger);
-      padding: 12px; border-radius: 8px; font-size: 13px; display: none;
-    }
-    
-    /* 核心舞台排版修正：使用 flex 垂直排列，並確保容器有固定寬高不被擠壓 */
-    .stage {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      background: radial-gradient(circle at center, #1e1e24 0%, var(--bg) 70%);
-      height: 100vh;
-      overflow: hidden;
-    }
-    .wheel-container {
-      position: relative;
-      width: 500px;
-      height: 500px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    canvas {
-      width: 500px;
-      height: 500px;
-      display: block;
-    }
-    
-    .spin-btn {
-      margin-top: 24px; background: var(--grad-primary); color: #121212; border: none; border-radius: 50px;
-      padding: 14px 48px; font-size: 18px; font-weight: 800; letter-spacing: 2px; cursor: pointer; min-height: 48px;
-      box-shadow: var(--shadow-glow); transition: all 0.3s ease;
-      z-index: 10;
-    }
-    .spin-btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 0 50px rgba(124,92,255,0.6); }
+    textarea { background-color: var(--surface-2); border: 1px solid var(--border); border-radius: 8px; color: var(--text); padding: 12px; font-size: 14px; line-height: 1.5; resize: none; height: 140px; outline: none; }
+    .primary-btn { background: var(--grad-primary); color: #121212; border: none; border-radius: 8px; padding: 12px; font-size: 16px; font-weight: 700; cursor: pointer; min-height: 44px; box-shadow: var(--shadow-glow); }
+    .stage { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; background: radial-gradient(circle at center, #1e1e24 0%, var(--bg) 70%); height: 100vh; overflow: hidden; position: relative; }
+    .wheel-container { position: relative; width: 480px; height: 480px; display: flex; align-items: center; justify-content: center; }
+    canvas { width: 480px; height: 480px; display: block; z-index: 2; }
+    .spin-btn { margin-top: 24px; background: var(--grad-primary); color: #121212; border: none; border-radius: 50px; padding: 14px 48px; font-size: 18px; font-weight: 800; letter-spacing: 2px; cursor: pointer; min-height: 48px; box-shadow: var(--shadow-glow); z-index: 5; }
     .spin-btn:disabled { background: var(--surface-2); color: var(--muted); border: 1px solid var(--border); box-shadow: none; cursor: not-allowed; }
     .modal-overlay { position: fixed; inset: 0; background-color: rgba(0, 0, 0, 0.75); backdrop-filter: blur(6px); display: flex; align-items: center; justify-content: center; z-index: 1000; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
     .modal-overlay.active { opacity: 1; pointer-events: auto; }
-    .modal-card { background: var(--surface); border: 2px solid transparent; background-image: linear-gradient(var(--surface), var(--surface)), var(--grad-primary); background-origin: border-box; background-clip: padding-box, border-box; border-radius: 16px; width: 90%; max-width: 480px; padding: 32px; text-align: center; box-shadow: var(--shadow-card); transform: scale(0.9); transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); position: relative; overflow: hidden; }
-    .modal-overlay.active .modal-card { transform: scale(1); }
-    .modal-card::before { content: ''; position: absolute; width: 200%; height: 200%; background: repeating-conic-gradient(from 0deg, rgba(255,255,255,0.03) 0deg 15deg, transparent 15deg 30deg); top: -50%; left: -50%; z-index: 0; animation: rotateRay 20s linear infinite; pointer-events: none; }
-    @keyframes rotateRay { 100% { transform: rotate(360deg); } }
-    .modal-content { position: relative; z-index: 1; }
-    .modal-title { font-size: 24px; font-weight: 800; margin-bottom: 16px; line-height: 1.4; }
+    .modal-card { background: var(--surface); border: 2px solid transparent; background-image: linear-gradient(var(--surface), var(--surface)), var(--grad-primary); background-origin: border-box; background-clip: padding-box, border-box; border-radius: 16px; width: 90%; max-width: 480px; padding: 32px; text-align: center; box-shadow: var(--shadow-card); position: relative; overflow: hidden; }
     .modal-winner { font-size: 32px; font-weight: 900; color: #fff; margin: 12px 0; text-shadow: 0 0 20px rgba(34,211,238,0.6); }
     .modal-actions { display: flex; gap: 12px; margin-top: 24px; }
-    .modal-btn { flex: 1; border: none; border-radius: 8px; padding: 12px; font-size: 15px; font-weight: 700; cursor: pointer; min-height: 44px; transition: all 0.2s; }
+    .modal-btn { flex: 1; border: none; border-radius: 8px; padding: 12px; font-size: 15px; font-weight: 700; cursor: pointer; min-height: 44px; }
     .modal-btn-confirm { background: var(--grad-primary); color: #121212; }
     .modal-btn-cancel { background: var(--surface-2); color: var(--text); border: 1px solid var(--border); }
     @media (max-width: 979px) {
-      .app-container { grid-template-columns: 1fr; grid-template-areas: "stage" "panel"; }
-      .stage { grid-area: stage; height: auto; padding: 20px; border-bottom: 1px solid var(--border); }
-      .control-panel { grid-area: panel; border-right: none; box-shadow: none; }
-      .wheel-container, canvas { width: 85vw; height: 85vw; max-width: 450px; max-height: 450px; }
+      .app-container { grid-template-columns: 1fr; }
+      .stage { height: auto; padding: 20px; }
+      .wheel-container, canvas { width: 80vw; height: 80vw; max-width: 400px; max-height: 400px; }
     }
   </style>
 </head>
@@ -162,9 +49,9 @@
     <div class="control-panel">
       <div class="panel-header">
         <h1>幸運輪盤控制台</h1>
-        <button id="audioToggle" class="icon-btn" aria-label="切換音效">
-          <svg id="soundOnIcon" xmlns="http://w3.org" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 9 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path><path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path></svg>
-          <svg id="soundOffIcon" xmlns="http://w3.org" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none;"><polygon points="11 5 6 9 2 9 2 15 6 9 11 19 11 5"></polygon><line x1="22" y1="9" x2="16" y2="15"></line><line x1="16" y1="9" x2="22" y2="15"></line></svg>
+        <button id="audioToggle" class="icon-btn">
+          <svg id="soundOnIcon" xmlns="http://w3.org" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 9 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path><path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path></svg>
+          <svg id="soundOffIcon" xmlns="http://w3.org" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none;"><polygon points="11 5 6 9 2 9 2 15 6 9 11 19 11 5"></polygon><line x1="22" y1="9" x2="16" y2="15"></line><line x1="16" y1="9" x2="22" y2="15"></line></svg>
         </button>
       </div>
       <div class="form-group">
@@ -182,17 +69,16 @@
 雙人電影票</textarea>
       </div>
       <button id="updateBtn" class="primary-btn">確認更新輪盤</button>
-      <div id="errorToast" class="toast"></div>
     </div>
     <div class="stage">
       <div class="wheel-container"><canvas id="wheelCanvas"></canvas></div>
       <button id="spinBtn" class="spin-btn">開始抽獎</button>
     </div>
   </div>
-  <div id="resultModal" class="modal-overlay" role="dialog" aria-modal="true">
+  <div id="resultModal" class="modal-overlay">
     <div class="modal-card">
       <div class="modal-content">
-        <div class="modal-title">🎉 抽獎結果揭曉 🎉</div>
+        <div style="font-size:24px;font-weight:800;margin-bottom:16px;">🎉 抽獎結果揭曉 🎉</div>
         <div id="modalWinnerText" class="modal-winner">恭喜！</div>
         <div class="modal-actions">
           <button id="confirmClaimBtn" class="modal-btn modal-btn-confirm">確認領獎 (移除名單)</button>
@@ -203,12 +89,19 @@
   </div>
   <script>
     const palette = ['#FF6B9D', '#4D9FFF', '#34D399', '#FBBF24', '#A78BFA', '#FB7185', '#22D3EE', '#F59E0B'];
-    let names = [];
-    let prizes = [];
-    let isSpinning = false;
-    let currentRotation = 0;
-    let soundEnabled = true;
-    let lastTickSector = -1;
-    let audioCtx = null;
-    let lastWinner = "";
-
+    let names = [], prizes = [], isSpinning = false, currentRotation = 0, soundEnabled = true, lastTickSector = -1, audioCtx = null, lastWinner = "";
+    const canvas = document.getElementById('wheelCanvas'), ctx = canvas.getContext('2d'), namesInput = document.getElementById('namesInput'), prizesInput = document.getElementById('prizesInput'), countBadge = document.getElementById('countBadge'), updateBtn = document.getElementById('updateBtn'), spinBtn = document.getElementById('spinBtn'), audioToggle = document.getElementById('audioToggle'), soundOnIcon = document.getElementById('soundOnIcon'), soundOffIcon = document.getElementById('soundOffIcon'), resultModal = document.getElementById('resultModal'), modalWinnerText = document.getElementById('modalWinnerText'), confirmClaimBtn = document.getElementById('confirmClaimBtn'), absentBtn = document.getElementById('absentBtn');
+    
+    function initAudio() { if (!audioCtx) { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } if (audioCtx.state === 'suspended') { audioCtx.resume(); } }
+    function playTick() { if (!soundEnabled) return; initAudio(); try { const osc = audioCtx.createOscillator(), gain = audioCtx.createGain(); osc.connect(gain); gain.connect(audioCtx.destination); osc.type = 'sine'; osc.frequency.setValueAtTime(1200, audioCtx.currentTime); osc.frequency.exponentialRampToValueAtTime(400, audioCtx.currentTime + 0.04); gain.gain.setValueAtTime(0.15, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.04); osc.start(); osc.stop(audioCtx.currentTime + 0.04); } catch (e) {} }
+    function playWin() { if (!soundEnabled) return; initAudio(); try { const now = audioCtx.currentTime, notes = [523.25, 659.25, 783.99, 1046.50]; notes.forEach((freq, index) => { const osc = audioCtx.createOscillator(), gain = audioCtx.createGain(); osc.connect(gain); gain.connect(audioCtx.destination); osc.type = index % 2 === 0 ? 'triangle' : 'sine'; osc.frequency.setValueAtTime(freq, now + index * 0.12); gain.gain.setValueAtTime(0.2, now + index * 0.12); gain.gain.exponentialRampToValueAtTime(0.001, now + index * 0.12 + 0.4); osc.start(now + index * 0.12); osc.stop(now + index * 0.12 + 0.4); }); } catch (e) {} }
+    
+    function parseInputs() {
+      let rawNames = namesInput.value.replace(/\\n/g, '\n');
+      let rawPrizes = prizesInput.value.replace(/\\n/g, '\n');
+      names = rawNames.split('\n').map(s => s.trim()).filter(Boolean);
+      prizes = rawPrizes.split('\n').map(s => s.trim()).filter(Boolean);
+      countBadge.textContent = names.length + ' 人';
+    }
+    
+    function resizeCanvas() {
