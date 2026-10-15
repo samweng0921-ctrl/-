@@ -144,7 +144,7 @@
         </button>
       </div>
       <div class="form-group">
-        <div class="label-wrapper"><label for="namesInput">參與抽獎名單 (一行一個)</label><span id="countBadge" class="badge">0 人</span></div>
+        <div class="label-wrapper"><label for="namesInput">參與抽獎名單 (一行一個)</label><span id="countBadge" class="badge">5 人</span></div>
         <textarea id="namesInput" autocomplete="off" spellcheck="false">王小明
 陳美玲
 林志豪
@@ -179,4 +179,16 @@
   </div>
   <script>
     const palette = ['#FF6B9D', '#4D9FFF', '#34D399', '#FBBF24', '#A78BFA', '#FB7185', '#22D3EE', '#F59E0B'];
-    let names = [], prizes = [], isSpinning = false, currentRotation = 0, soundEnabled = true, lastTickSector = -1, audioCtx = null, lastWinner = "";
+    let names = [];
+    let prizes = [];
+    let isSpinning = false;
+    let currentRotation = 0;
+    let soundEnabled = true;
+    let lastTickSector = -1;
+    let audioCtx = null;
+    let lastWinner = "";
+
+    const canvas = document.getElementById('wheelCanvas');
+    const ctx = canvas.getContext('2d');
+    const namesInput = document.getElementById('namesInput');
+    const prizesInput = document.getElementById('prizesInput');
