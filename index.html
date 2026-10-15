@@ -97,11 +97,10 @@
     function playWin() { if (!soundEnabled) return; initAudio(); try { const now = audioCtx.currentTime, notes = [523.25, 659.25, 783.99, 1046.50]; notes.forEach((freq, index) => { const osc = audioCtx.createOscillator(), gain = audioCtx.createGain(); osc.connect(gain); gain.connect(audioCtx.destination); osc.type = index % 2 === 0 ? 'triangle' : 'sine'; osc.frequency.setValueAtTime(freq, now + index * 0.12); gain.gain.setValueAtTime(0.2, now + index * 0.12); gain.gain.exponentialRampToValueAtTime(0.001, now + index * 0.12 + 0.4); osc.start(now + index * 0.12); osc.stop(now + index * 0.12 + 0.4); }); } catch (e) {} }
     
     function parseInputs() {
-      let rawNames = namesInput.value.replace(/\\n/g, '\n');
-      let rawPrizes = prizesInput.value.replace(/\\n/g, '\n');
-      names = rawNames.split('\n').map(s => s.trim()).filter(Boolean);
-      prizes = rawPrizes.split('\n').map(s => s.trim()).filter(Boolean);
+      names = namesInput.value.split('\n').map(s => s.trim()).filter(Boolean);
+      prizes = prizesInput.value.split('\n').map(s => s.trim()).filter(Boolean);
       countBadge.textContent = names.length + ' 人';
     }
     
     function initCanvas() {
+      const size = 450; const dpr = window.devicePixelRatio || 1;
